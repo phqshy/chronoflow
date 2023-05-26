@@ -72,7 +72,12 @@ const deletePost = async (title) => {
     dir: BaseDirectory.AppData
   }));
 
-  header = header.filter(e => e !== title);
+  for (const group in header) {
+    if (header[group].posts.findIndex((e) => e === title) !== -1) {
+      let index = group.posts.findIndex((e) => e === title);
+      header[group].posts.splice(index, 1);
+    }
+  }
 
   await writeTextFile(`posts/.header.chrono`, JSON.stringify(header), {
     dir: BaseDirectory.AppData
@@ -102,4 +107,31 @@ const deleteGroup = async (group) => {
   });
 };
 
-export { loadPostHeaders, createPost, loadPost, updatePost, deletePost, createGroup, deleteGroup };
+//TODO: add specification for group
+const renamePost = async (oldTitle, newTitle) => {
+  let headers = await loadPostHeaders();
+  for (const group in headers) {
+    if (headers[group].posts.findIndex((e) => e === oldTitle) !== -1) {
+      let index = headers[group].posts.findIndex((e) => e === oldTitle);
+      headers[group].posts.splice(index, 1, newTitle);
+      break;
+    }
+  }
+
+  await writeTextFile(`posts/.header.chrono`, JSON.stringify(headers), {
+    dir: BaseDirectory.AppData
+  });
+
+  let text = await readTextFile(`posts/${oldTitle}.chrono`, {
+    dir: BaseDirectory.AppData
+  });
+
+  await writeTextFile(`posts/${newTitle}.chrono`, text, {
+    dir: BaseDirectory.AppData
+  });
+  await removeFile(`posts/${oldTitle}.chrono`, {
+    dir: BaseDirectory.AppData
+  });
+};
+
+export { loadPostHeaders, createPost, loadPost, updatePost, deletePost, createGroup, deleteGroup, renamePost };

@@ -1,9 +1,16 @@
 <script>
   import {
-    Accordion, AccordionItem,
-    Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle,
+    Accordion,
+    AccordionItem,
+    Button,
+    ButtonDropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
     FormGroup,
-    Input, ListGroup, ListGroupItem,
+    Input,
+    ListGroup,
+    ListGroupItem,
     Modal,
     ModalFooter
   } from "sveltestrap";
@@ -20,7 +27,6 @@
   let postGroup = "";
 
   export let promise = loadPostHeaders();
-
 
   const dispatch = createEventDispatcher();
 

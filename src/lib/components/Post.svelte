@@ -5,6 +5,7 @@
   import Text from "$lib/components/edit/Text.svelte";
   import Preview from "$lib/components/edit/Preview.svelte";
   import { createEventDispatcher } from "svelte";
+  import Rename from "$lib/components/edit/Rename.svelte";
 
   export let title = "";
 
@@ -18,6 +19,11 @@
     saved.title = title;
     saved[section] = value;
     updatePost(title, saved);
+  };
+
+  const rename = (event) => {
+    title = event.detail.title;
+    dispatch("update");
   };
 </script>
 
@@ -33,11 +39,14 @@
       <TabPane tabId="preview" tab="Preview">
         <Preview bind:title={title} bind:text={text} />
       </TabPane>
+      <TabPane tabId="rename" tab="Rename">
+        <Rename bind:oldTitle={title} on:rename={rename} />
+      </TabPane>
       <TabPane tabId="delete" tab="Delete">
         <div style="padding: 10px">
           <Button color="danger" on:click={async () => {
               await deletePost(title);
-              dispatch("delete");
+              dispatch("update");
           }}>Delete Post
           </Button>
         </div>

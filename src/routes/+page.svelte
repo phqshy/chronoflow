@@ -25,7 +25,7 @@
     </div>
     <div style="flex: 3; background: white; padding: 10px">
       {#if current !== ""}
-        <Post title={current} on:delete={() => posts = loadPostHeaders()} />
+        <Post title={current} on:update={() => posts = loadPostHeaders()} />
       {/if}
     </div>
   </div>
