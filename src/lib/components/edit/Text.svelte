@@ -1,7 +1,7 @@
 <script>
   import { loadPost } from "$lib/scripts/posts.js";
   import { Button, ButtonGroup, FormGroup, Input, Label } from "sveltestrap";
-  import { createEventDispatcher, onDestroy, onMount } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
 
   export let title = "";
 
@@ -14,12 +14,12 @@
   onMount(async () => {
     let post = await loadPost(title);
     text = post.text;
-    inner.style.height = window.innerHeight - 200 + "px";
+    if (inner !== undefined) inner.style.height = window.innerHeight - 200 + "px";
   });
 
   const process = () => {
     dispatch("update", { "value": text, "title": title });
-    inner.style.height = window.innerHeight - 200 + "px";
+    if (inner !== undefined) inner.style.height = window.innerHeight - 200 + "px";
   };
 
   $: if (text) process();
